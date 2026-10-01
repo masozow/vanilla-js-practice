@@ -3,7 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/holiday.css@0.11.6"
+    />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <script type="module" src="/src/main.js"></script>
     <title>Search</title>
   </head>
-  <body></body>
+  <body>
+    <main id="app">
+      <h1>Search users</h1>
+      <input type="text" id="search" placeholder="Search users..." />
+      <p id="loading" class="hidden">Loading...</p>
+      <p id="error" class="hidden">
+        Error fetching users. Please try again later.
+      </p>
+      <div id="results" class="grid"></div>
+    </main>
+  </body>
 </html>
