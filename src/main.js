@@ -1,0 +1,2 @@
+import { httpClient } from "./shared/infrastructure/httpClient.js";
+httpClient({ url: "https://jsonplaceholder.typicode.com/users" }).then((data) => console.log(data)).catch((error) => console.error(error));
