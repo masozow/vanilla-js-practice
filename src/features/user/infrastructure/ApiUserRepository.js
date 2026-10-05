@@ -26,3 +26,27 @@
 //             .map(u => new User(u.id, u.name, favs.includes(u.id)));
 //     }
 // }
+import { baseApiUrl } from '../../../shared/dictionaries/ApiURLs';
+import { User } from '../domain/User';
+
+export class ApiUserRepository {
+    constructor(httpClient, favRepo) {
+        this.httpClient = httpClient;
+        this.favRepo = favRepo;
+        this.endPoint = `${baseApiUrl}/users`
+    }
+    async search(query) {
+        if (!query.trim()) return [];
+
+        const rawData = await this.httpClient({
+            url: this.endPoint,
+            method: 'GET'
+        })
+
+        const favs = this.favRepo.getFavs();
+
+        return rawData.
+            filter(user => user.name.toLowerCase().includes(query.toLowerCase)).
+            map(user => new User(user.id, user.name, favs.includes(user.id)));
+    }
+}
