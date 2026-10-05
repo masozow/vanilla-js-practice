@@ -1,23 +1,22 @@
-export const initUserUI = (userRepo, dom) => {
+import { debounce } from '../../../shared/utils/debounce.js';
+import { UserCard } from './components/UserCard.js';
+
+export const initUserUI = (userService, dom) => {
     const { input, results, loading, error } = dom;
 
-    const renderUsers = (users) => {
-        results.innerHTML = users.map(user => `
-      <div class="card">
-        <h3>${user.name}</h3>
-      </div>
-    `).join('');
-    };
+    userService.subscribe((state) => {
+        loading.classList.toggle('hidden', !state.isLoading);
+        error.classList.toggle('hidden', !state.isError);
 
-    input.addEventListener('input', async (e) => {
-        loading.classList.remove('hidden');
-        try {
-            const users = await userRepo.search(e.target.value);
-            renderUsers(users);
-        } catch (err) {
-            error.classList.remove('hidden');
-        } finally {
-            loading.classList.add('hidden');
-        }
-    });
-};
+        results.innerHTML = '';
+
+        state.users.forEach(user => {
+            const cardNode = UserCard(user, (id) => userService.toggleFav(id));
+            results.appendChild(cardNode);
+        })
+    })
+
+    input.addEventListener('input', debounce((e) => {
+        userService.search(e.target.value);
+    }, 500));
+}

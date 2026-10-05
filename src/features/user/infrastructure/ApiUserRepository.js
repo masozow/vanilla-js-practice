@@ -26,8 +26,8 @@
 //             .map(u => new User(u.id, u.name, favs.includes(u.id)));
 //     }
 // }
-import { baseApiUrl } from '../../../shared/dictionaries/ApiURLs';
-import { User } from '../domain/User';
+import { baseApiUrl } from '../../../shared/dictionaries/ApiURLs.js';
+import { User } from '../domain/User.js';
 
 export class ApiUserRepository {
     constructor(httpClient, favRepo) {

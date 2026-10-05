@@ -1,1 +1,1 @@
-const baseApiUrl = 'https://jsonplaceholder.typicode.com/';
+export const baseApiUrl = 'https://jsonplaceholder.typicode.com/';
