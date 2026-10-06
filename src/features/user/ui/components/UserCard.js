@@ -9,6 +9,6 @@ export const UserCard = (user, onToggleFav) => {
     btn.textContent = user.isFavorite ? ' [*] Quitar fav' : '[ ] Marcar Fav';
     btn.onclick = () => onToggleFav(user.id);
 
-    card.append(title.btn);
+    card.append(title, btn);
     return card;
 }

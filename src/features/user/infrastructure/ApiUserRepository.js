@@ -46,7 +46,7 @@ export class ApiUserRepository {
         const favs = this.favRepo.getFavs();
 
         return rawData.
-            filter(user => user.name.toLowerCase().includes(query.toLowerCase)).
-            map(user => new User(user.id, user.name, favs.includes(user.id)));
+            filter(user => user.name.toLowerCase().includes(query.toLowerCase())).
+            map(user => new User(user.id, user.name, user.email, favs.includes(user.id)));
     }
 }

@@ -8,7 +8,7 @@ export const initUserUI = (userService, dom) => {
         loading.classList.toggle('hidden', !state.isLoading);
         error.classList.toggle('hidden', !state.isError);
         results.innerHTML = '';
-        const users = Array.isArray(state.data) ? state.data : [];
+        const users = Array.isArray(state.users) ? state.users : [];
         console.log("Users: ", users);
         users.forEach(user => {
             const cardNode = UserCard(user, (id) => userService.toggleFav(id));
