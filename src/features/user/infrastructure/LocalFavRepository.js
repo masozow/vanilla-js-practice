@@ -4,6 +4,6 @@
 // }
 
 export class LocalFavRespository {
-    getFavs() { return JSON.parse(localStorage.getItem('favs') || []) }
-    setFavs(favs) { localStorage.setItem('favs', JSON.stringify(favs)) }
+    getFavs() { return JSON.parse(localStorage.getItem('favs')) || [] }
+    saveFavs(favs) { localStorage.setItem('favs', JSON.stringify(favs)) }
 }

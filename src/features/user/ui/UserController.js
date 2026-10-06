@@ -7,10 +7,10 @@ export const initUserUI = (userService, dom) => {
     userService.subscribe((state) => {
         loading.classList.toggle('hidden', !state.isLoading);
         error.classList.toggle('hidden', !state.isError);
-
         results.innerHTML = '';
-
-        state.users.forEach(user => {
+        const users = Array.isArray(state.data) ? state.data : [];
+        console.log("Users: ", users);
+        users.forEach(user => {
             const cardNode = UserCard(user, (id) => userService.toggleFav(id));
             results.appendChild(cardNode);
         })

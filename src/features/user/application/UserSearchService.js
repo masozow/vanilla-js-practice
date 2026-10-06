@@ -1,4 +1,30 @@
+// @ts-check
+
+/**
+ * @typedef {Object} IFavRepository
+ * @property {function(): number[]} getFavs
+ * @property {function(number[]): void} saveFavs
+ */
+
+/**
+ * @typedef {Object} IUserRepository
+ * @property {function(string): Promise<Array<any>>} search
+ */
+
+
+/**
+ * Tipo específico para el estado actual de este servicio
+ * @typedef {Object} UserSearchState
+ * @property {Array<any>} users
+ * @property {boolean} isLoading
+ * @property {boolean} isError
+ * @property {string} lastQuery
+ */
 export class UserSearchService {
+    /**
+     * @param {IUserRepository} userRepo
+     * @param {IFavRepository} favRepo
+     */
     constructor(userRepo, favRepo) {
         this.userRepo = userRepo;
         this.favRepo = favRepo;
@@ -7,6 +33,7 @@ export class UserSearchService {
         //Usamos set para no tener observers duplicados
 
         //Estado único de la Feature Usuarios
+        /** @type {UserSearchState} */
         this.state = {
             users: [],
             isLoading: false,
@@ -17,17 +44,31 @@ export class UserSearchService {
 
     //Método Subscribe para el patrón Observer:
     //Permite a la UI suscribire a los cambios de estado
+
+    /**
+       * Registra una función de la UI para avisarle cuando el estado cambie
+       * @param {function(UserSearchState): void} listener - Callback que recibe el estado actual
+       * @returns {function(): void} Función para desuscribirse
+       */
     subscribe(listener) {
         this.listeners.add(listener);
         listener(this.state); //Emite el estado inicial
+
+        return () => this.listeners.delete(listener);
     }
 
     //Función privada donde se envía a cada listener u observer,
     //el estado actual de subject User
     #notify() {
+        console.log("[State Transition]:", { ...this.state });
         this.listeners.forEach(listener => listener(this.state));
     }
 
+    /**
+     * Realiza la búsqueda de usuarios gestionando race conditions
+     * @param {string} query
+     * @returns {Promise<void>}
+     */
     async search(query) {
         this.state.lastQuery = query;
         const reqId = ++this.currentReqId;
@@ -49,6 +90,7 @@ export class UserSearchService {
             this.state.isLoading = false;
             this.#notify();
         } catch (error) {
+            console.error("Error at userSearchService: ", error);
             if (reqId !== this.currentReqId) return;
 
             this.state.isError = true;
@@ -57,6 +99,10 @@ export class UserSearchService {
         }
     }
 
+    /**
+         * Alterna el estado de favorito de un usuario por su ID
+         * @param {number} userId
+         */
     toggleFav(userId) {
         let favs = this.favRepo.getFavs();
         if (favs.includes(userId)) favs = favs.filter(id => id !== userId);
