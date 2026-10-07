@@ -3,12 +3,17 @@ export class LocalFavRepository {
         try {
             return JSON.parse(localStorage.getItem('favs')) || [];
         } catch (error) {
-            console.error("Data corrompida  en localStorage");
+            console.error("LocalStorage is corrupted: ", error);
             return [];
         }
-
     }
     setFavs(favs) {
-        localStorage.setItem('favs', JSON.stringify(favs));
+        try {
+            localStorage.setItem('favs', JSON.stringify(favs));
+        }
+        catch (error) {
+            console.error('Favs can\'t be serialized: ', error);
+        }
+
     }
 }
