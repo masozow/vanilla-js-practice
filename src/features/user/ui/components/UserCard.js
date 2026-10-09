@@ -1,14 +1,12 @@
-export const UserCard = (user, onToggleFav) => {
-    const card = document.createElement('div');
-    card.className = `card ${user.isFavorite ? 'fav' : ''}`;
-
-    const title = document.createElement('h3');
-    title.textContent = user.name;
-
-    const btn = document.createElement('button');
-    btn.textContent = user.isFavorite ? ' [*] Quitar fav' : '[ ] Marcar Fav';
-    btn.onclick = () => onToggleFav(user.id);
-
-    card.append(title, btn);
-    return card;
-}
+/**
+ * DUMB COMPONENT: Uses exclusively the provided CSS classes (.card, .fav).
+ * The 'fav' class will trigger the gold border and background from styles.css.
+ */
+export const UserCard = (user) => `
+    <article data-id="${user.id}" class="card ${user.isFavorite ? 'fav' : ''}">
+        <h3>${user.name}</h3>
+        <button data-action="toggle-fav">
+            ${user.isFavorite ? '[*] Remove favorite' : '[ ] Mark as favorite'}
+        </button>
+    </article>
+`;
