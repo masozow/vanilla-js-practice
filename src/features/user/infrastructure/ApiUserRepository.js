@@ -15,7 +15,11 @@ export class ApiUserRepository {
         if (typeof query !== 'string') throw new Error("Infra error: query must be a string");
         if (!query.trim()) return [];
 
-        const rawData = this.httpClient(this.endpoint);
+        const rawData = await this.httpClient(this.endpoint);
+        if (!Array.isArray(rawData)) {
+            console.warn("[ApiUserRepository] La API no devolvió un array válido:", rawData);
+            return []; // Fail safe: if there's no valid data, we send and empty array
+        }
         const favs = this.favRepo.getFavs();
 
         return rawData.

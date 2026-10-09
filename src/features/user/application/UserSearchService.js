@@ -146,8 +146,8 @@ export class UserSearchService {
 
         const reqId = ++this.currentReqId;
 
-        this.isLoading = true;
-        this.isError = false;
+        this.state.isLoading = true;
+        this.state.isError = false;
         this.#notify();
         try {
             const users = await this.userRepo.search(normalizedQuery);
@@ -177,7 +177,7 @@ export class UserSearchService {
         this.favRepo.setFavs(favs);
 
         const user = this.state.users.find(user => user.id === userId);
-        if (user) user.toggleFav();
+        if (user) user.toggleFavorite();
 
         this.#notify();
     }
