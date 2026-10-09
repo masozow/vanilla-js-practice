@@ -154,14 +154,14 @@ export class UserSearchService {
             if (this.currentReqId !== reqId) return;
 
             this.state.users = users;
-            this.isLoading = false;
-            this.isError = false;
+            this.state.isLoading = false;
+            this.state.isError = false;
             this.#notify();
         } catch (error) {
             this.#log_error(error);
             if (this.currentReqId !== reqId) return;
-            this.isError = true;
-            this.isLoading = false;
+            this.state.isError = true;
+            this.state.isLoading = false;
             this.#notify();
         }
     }
